@@ -1,65 +1,28 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { useState } from "react";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+// 1. Penerapan External Style
+import { styles } from "../constants/styles";
 
-export default function Codelab4() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Ionicons name="information-circle" size={40} color="red" />
-        <Text style={styles.title}>Hello World</Text>
-      </View>
+export type DietGoal = "Turun BB" | "Jaga BB" | "Tambah Otot";
 
-      <View style={styles.subHeaderContainer}>
-        <Text style={styles.subtitle}>Evo wthas up gess..</Text>
-        <Ionicons name="hand-left" size={24} color="orange" />
-      </View>
-
-      <TextInput placeholder="Type here..." style={styles.input} />
-      <Button title="Click Me" onPress={() => {}} />
-    </View>
-  );
+export interface MealItem {
+  readonly id: number; // Readonly ID
+  name: string;
+  category: string;
+  calories: number; // Kalori (kkal)
+  protein: number; // Protein (gram)
+  price: number; // Harga (Rupiah)
+  imageUrl: string;
+  isPopular?: boolean; // Optional property
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#e8f2fe",
-    justifyContent: "center",
-    padding: 20,
-  },
-  headerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-    gap: 8,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: "red",
-    textAlign: "center",
-  },
-  subHeaderContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 20,
-    gap: 6,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#333",
-  },
-  input: {
-    borderWidth: 2,
-    borderColor: "blue",
-    backgroundColor: "white",
-    padding: 10,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-});
 const MEAL_LIST: MealItem[] = [
   {
     id: 1,
