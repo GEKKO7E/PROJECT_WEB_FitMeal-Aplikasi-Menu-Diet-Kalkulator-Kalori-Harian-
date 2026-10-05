@@ -222,3 +222,41 @@ export default function FitMealApp() {
             : "⚠️ Melebihi target kalori harianmu!"}
         </Text>
       </View>
+
+      <Text style={styles.sectionTitle}>Rekomendasi Menu Makanan</Text>
+
+      {MEAL_LIST.map((meal: MealItem) => {
+        const badge = getCalorieStatus(meal.calories);
+
+        return (
+          // Key unik pada root item looping
+          <View key={meal.id} style={styles.mealCard}>
+            <Image source={{ uri: meal.imageUrl }} style={styles.mealImage} />
+
+            <View style={styles.mealInfo}>
+              <Text style={styles.mealName}>{meal.name}</Text>
+              <Text style={styles.mealPrice}>{formatRupiah(meal.price)}</Text>
+
+              <View style={styles.mealBadgesRow}>
+                {/* 6. Penerapan Inline Style (style={{ ... }}) Dinamis */}
+                <View
+                  style={[styles.badge, { backgroundColor: badge.bgColor }]}
+                >
+                  <Text style={[styles.badgeText, { color: badge.textColor }]}>
+                    {badge.label} • {meal.calories} kkal
+                  </Text>
+                </View>
+
+                <View style={[styles.badge, { backgroundColor: "#f1f5f9" }]}>
+                  <Text style={[styles.badgeText, { color: "#475569" }]}>
+                    {meal.protein}g Protein
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        );
+      })}
+    </ScrollView>
+  );
+}
