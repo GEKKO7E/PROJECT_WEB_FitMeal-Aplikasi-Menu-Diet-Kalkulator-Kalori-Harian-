@@ -114,7 +114,7 @@ export default function FitMealApp() {
   // 4. PENERAPAN CUSTOM FUNCTIONS (Bobot 10%)
   // ==========================================
 
-  // Custom Function 1: Menghitung kebutuhan kalori harian (BMR dasar)
+    // Custom Function 1: Menghitung kebutuhan kalori harian (BMR dasar)
   const calculateDailyCalories = (
     userWeight: number,
     userHeight: number,
@@ -139,3 +139,86 @@ export default function FitMealApp() {
       return { label: "High Cal", bgColor: "#fee2e2", textColor: "#b91c1c" };
     }
   };
+
+  
+  const calculateTotalMenuCalories = (): number => {
+    let total = 0;
+    for (let i = 0; i < MEAL_LIST.length; i++) {
+      total += MEAL_LIST[i].calories;
+    }
+    return total;
+  };
+
+  const handleCalculate = () => {
+    const w = parseFloat(weight) || 0;
+    const h = parseFloat(height) || 0;
+    const result = calculateDailyCalories(w, h);
+    setTargetCalories(result);
+  };
+
+  const totalMealCalories = calculateTotalMenuCalories();
+
+  return (
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.scrollContent}
+    >
+      {/* Header Aplikasi */}
+      <View style={styles.header}>
+        <View style={styles.headerTitleRow}>
+          <Ionicons name="flame" size={32} color="#f97316" />
+          <Text style={styles.headerTitle}>FitMeal Tracker</Text>
+        </View>
+        <Text style={styles.headerSubtitle}>
+          Kalkulator Kebutuhan Kalori & Menu Diet Sehat Harian
+        </Text>
+      </View>
+
+      {/* Bagian 1: Kalkulator Kalori */}
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Hitung Kebutuhan Kalori</Text>
+        <View style={styles.inputRow}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Berat Badan (kg)</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              value={weight}
+              onChangeText={setWeight}
+              placeholder="Contoh: 65"
+            />
+          </View>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Tinggi Badan (cm)</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              value={height}
+              onChangeText={setHeight}
+              placeholder="Contoh: 170"
+            />
+          </View>
+        </View>
+
+        <Pressable style={styles.buttonPrimary} onPress={handleCalculate}>
+          <Ionicons name="calculator-outline" size={18} color="#ffffff" />
+          <Text style={styles.buttonText}>Hitung Target Kalori</Text>
+        </Pressable>
+
+        {/* Hasil Perhitungan Target */}
+        <View style={styles.resultBox}>
+          <Text style={styles.resultLabel}>Target Kebutuhan Harianmu</Text>
+          <Text style={styles.resultValue}>{targetCalories} kkal</Text>
+        </View>
+      </View>
+
+      {/* Bagian 2: Ringkasan Total Menu Hari Ini */}
+      <View style={styles.summaryCard}>
+        <Text style={styles.summaryTitle}>Total Kalori dari Daftar Menu:</Text>
+        <Text style={styles.summaryValue}>{totalMealCalories} kkal</Text>
+        <Text style={{ color: "#38bdf8", fontSize: 13, marginTop: 4 }}>
+          {totalMealCalories <= targetCalories
+            ? "✅ Kalori menu harian masih dalam batas aman targetmu."
+            : "⚠️ Melebihi target kalori harianmu!"}
+        </Text>
+      </View>
