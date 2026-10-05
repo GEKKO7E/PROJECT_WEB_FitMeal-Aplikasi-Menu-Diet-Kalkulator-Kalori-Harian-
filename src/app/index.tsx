@@ -9,8 +9,7 @@ import {
   View,
 } from "react-native";
 // 1. Penerapan External Style
-import { styles } from "../constants/styles";
-
+import { styles } from "./styles";
 export type DietGoal = "Turun BB" | "Jaga BB" | "Tambah Otot";
 
 export interface MealItem {
