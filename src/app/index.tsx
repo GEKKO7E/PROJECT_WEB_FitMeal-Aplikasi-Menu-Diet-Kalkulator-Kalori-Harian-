@@ -8,7 +8,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-// 1. Penerapan External Style (diambil dari ./styles.ts di folder yang sama)
+
 import { styles } from "./styles";
 
 
