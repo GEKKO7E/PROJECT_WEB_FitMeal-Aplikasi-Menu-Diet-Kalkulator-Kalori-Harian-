@@ -47,7 +47,7 @@ const todaysMenu: MealItem[] = [
 ];
 
 export default function Index() {
-  const userName: string = "Rayhan";
+  const userName: string = "Danishwara";
   const remainingCalories: number = summaryData.target - summaryData.consumed;
   const progressPercent: string = `${Math.round((summaryData.consumed / summaryData.target) * 100)}%`;
 
