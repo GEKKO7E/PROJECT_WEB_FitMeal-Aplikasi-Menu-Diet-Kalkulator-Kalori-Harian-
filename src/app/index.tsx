@@ -1,106 +1,210 @@
 import { Ionicons } from "@expo/vector-icons";
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Alert, Image, Pressable, ScrollView, Text, View } from "react-native";
 import { styles } from "./styles";
-import { DietGoal, MealItem } from "./types";
+import { CalorieSummary, MealItem } from "./types";
 
-// Array of Objects Data FitMeal
-const mealData: MealItem[] = [
+// Data Ringkasan Kalori Harian
+const summaryData: CalorieSummary = {
+  consumed: 1420,
+  target: 2100,
+  carbs: { current: 180, target: 250 },
+  protein: { current: 95, target: 120 },
+  fat: { current: 38, target: 60 },
+};
+
+// Data Menu Makanan Hari Ini
+const todaysMenu: MealItem[] = [
   {
     id: 1,
-    name: "Dada Ayam Bakar",
-    category: "Makan Siang",
-    calories: 350,
-    protein: 40,
-    price: 25000,
+    name: "Nasi Merah Ayam Dada Bakar",
+    category: "MAKAN SIANG",
+    calories: 380,
+    protein: 32,
+    timeMinutes: 15,
     imageUrl:
-      "https://i.pinimg.com/736x/73/a0/75/73a0755da93a44f550acca3200593ad1.jpg",
-    isPopular: true,
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAdS2D0sag972o7Gylp4NvFO7SDV3Z4u9U0y6oB95xWQQrkAoZm8xmePC7iXpGJGWjIRaHCKDDR3kUTkvdIoXzugM86oKzxRKpEg-HqZe-Ju0YDK2OBgQC_MN4wc6ktOO6DShVuYPaXPcYIiJIS1O7c4sWCrpxPgXRs1rLxzSuog5jVdHSM2RI4QtFLgd4HLh19f15RM2c-e6LdJpbU732SOblWfOE5CzSIi8A0d1mUfPWbZcUKR2MY",
   },
   {
     id: 2,
-    name: "Salad Sayur Telur",
-    category: "Sarapan",
-    calories: 250,
-    protein: 15,
-    price: 20000,
-    imageUrl: "https://picsum.photos/201",
+    name: "Gado-Gado Telur Rebus (Bumbu Terpisah)",
+    category: "SARAPAN",
+    calories: 320,
+    protein: 18,
+    timeMinutes: 10,
+    imageUrl:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBJx3ZptWknntVWXIgeYEIU-yUHyLMa3F8jQ06RgwHdnJip_0hN8sPg5SIygtGKmBa3rBjmfO7YmMAUeH0yJC3wNeGI-K1REnKtsEtHY2mJKOL02N-4OVYa0Q0psHQM3X-ZVqMZANo0A1tzrCDxNIUn4Apc0mSfUQHwMGY4sFrwMPFdWLT2ClKHAERIzaBpcP0ahIQJtMmxW3JbYwKS9n03gaaHRM1k8j3ehu6p2u0bu8Op3CSP8bHe",
   },
   {
     id: 3,
-    name: "Oatmeal Pisang",
-    category: "Camilan",
-    calories: 200,
-    protein: 8,
-    price: 15000,
-    imageUrl: "https://picsum.photos/202",
-    isPopular: true,
+    name: "Ikan Gurame Kerapu Kukus Bumbu Kuning",
+    category: "MAKAN MALAM",
+    calories: 290,
+    protein: 30,
+    timeMinutes: 20,
+    imageUrl:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCIg7m7bav5f3P4WpxIvY0KTK6WaHBFSdJa8ntbDAR1riF86cacvz1qmG2YX0fKxfdIqAL4jWGt-L0Xgmgh6k-E5BQ4itcHto5do18vAvjtLx1C3w7Jndwp32nLDV_cmShglgEC_8d9nKTiRq3Hz4Z2JDiz1l7t1NTzMA--dfMcOtAWbhwlXXB-kmNyJRySVdkYI8f8sKrB2qvKF2ISt5NIDFkzCfzJ61P40-pdpZltKI4s72RHBnXe",
   },
 ];
 
 export default function Index() {
-  const appName: string = "FitMeal";
-  const userGoal: DietGoal = "Turun BB";
+  const userName: string = "Rayhan";
+  const remainingCalories: number = summaryData.target - summaryData.consumed;
+  const progressPercent: string = `${Math.round((summaryData.consumed / summaryData.target) * 100)}%`;
 
-  // Custom Function untuk Render Card Makanan
+  // Custom Function untuk Render Item Menu[cite: 33, 46]
   const renderMealCard = (item: MealItem) => {
     return (
-      <View key={item.id} style={styles.card}>
-        {item.isPopular ? (
-          <View
-            style={{
-              backgroundColor: "#fef08a",
-              padding: 4,
-              borderRadius: 4,
-              alignSelf: "flex-start",
-              marginBottom: 5,
-            }}
-          >
-            <Text
-              style={{ fontSize: 10, color: "#854d0e", fontWeight: "bold" }}
-            >
-              ⭐ Populer
+      <View key={item.id} style={styles.foodCard}>
+        <Image source={{ uri: item.imageUrl }} style={styles.foodImage} />
+        <View style={styles.foodInfo}>
+          <Text style={styles.categoryBadge}>{item.category}</Text>
+          <Text style={styles.foodTitle} numberOfLines={1}>
+            {item.name}
+          </Text>
+          <Text style={styles.foodSubtitle}>
+            {item.protein}g Protein • {item.timeMinutes} mnt
+          </Text>
+
+          <View style={styles.foodFooter}>
+            <Text style={styles.calorieCount}>
+              {item.calories} <Text style={styles.macroSub}>kkal</Text>
             </Text>
+
+            {/* Pressable Interaktif untuk Tambah Menu[cite: 11] */}
+            <Pressable
+              style={styles.addButton}
+              onPress={() =>
+                Alert.alert(
+                  "FitMeal",
+                  `${item.name} berhasil ditambahkan ke log harian!`,
+                )
+              }
+            >
+              <Ionicons name="add" size={16} color="#0e2d1f" />
+            </Pressable>
           </View>
-        ) : null}
-
-        <Image source={{ uri: item.imageUrl }} style={styles.image} />
-        <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.subtitle}>
-          {item.category} • {item.calories} kkal
-        </Text>
-
-        <View style={styles.row}>
-          <Text style={styles.price}>Rp {item.price}</Text>
-          <Pressable style={styles.button}>
-            <Ionicons name="add-circle" size={18} color="white" />
-            <Text style={styles.buttonText}>Pilih</Text>
-          </Pressable>
         </View>
       </View>
     );
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      {/* 1. Top Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>{appName}</Text>
-        <Text style={styles.headerSubtitle}>Target: {userGoal}</Text>
+        <View style={styles.brandContainer}>
+          <Ionicons name="leaf-outline" size={20} color="#0e2d1f" />
+          <Text style={styles.brandTitle}>FITMEAL</Text>
+        </View>
+        <Pressable style={styles.iconButton}>
+          <Ionicons name="notifications-outline" size={20} color="#69736c" />
+        </Pressable>
       </View>
 
-      <TextInput placeholder="Cari menu diet..." style={styles.input} />
+      {/* 2. Greeting Section */}
+      <View style={styles.greetingSection}>
+        <Text style={styles.dateText}>SENIN, 24 OKTOBER</Text>
+        <Text style={styles.greetingTitle}>Halo, {userName}.</Text>
+        <Text style={styles.greetingSubtitle}>
+          Target kalori harian siap dicapai hari ini.
+        </Text>
+      </View>
 
-      <Text style={styles.sectionTitle}>Rekomendasi Menu</Text>
+      {/* 3. Calorie Summary Card */}
+      <View style={styles.cardContainer}>
+        <View style={styles.calorieCard}>
+          <View style={styles.calorieHeader}>
+            <View>
+              <Text style={styles.sectionLabel}>ASUPAN HARI INI</Text>
+              <Text style={styles.calorieMainText}>
+                {summaryData.consumed.toLocaleString()}{" "}
+                <Text style={styles.calorieSubText}>
+                  / {summaryData.target.toLocaleString()} kkal
+                </Text>
+              </Text>
+            </View>
+            <View style={{ alignItems: "flex-end" }}>
+              <Text style={styles.sectionLabel}>TERSISA</Text>
+              <Text style={styles.remainingText}>{remainingCalories} kkal</Text>
+            </View>
+          </View>
 
-      <View style={styles.listContainer}>
-        {/* Loop Data Menggunakan .map() */}
-        {mealData.map((meal) => renderMealCard(meal))}
+          {/* Progress Bar dengan Inline Style[cite: 18, 46] */}
+          <View style={styles.progressBarBg}>
+            <View
+              style={[styles.progressBarFill, { width: progressPercent }]}
+            />
+          </View>
+
+          {/* Macronutrients Grid */}
+          <View style={styles.macrosGrid}>
+            <View>
+              <Text style={styles.macroLabel}>Karbo</Text>
+              <Text style={styles.macroValue}>
+                {summaryData.carbs.current}g{" "}
+                <Text style={styles.macroSub}>
+                  / {summaryData.carbs.target}g
+                </Text>
+              </Text>
+            </View>
+            <View>
+              <Text style={styles.macroLabel}>Protein</Text>
+              <Text style={styles.macroValue}>
+                {summaryData.protein.current}g{" "}
+                <Text style={styles.macroSub}>
+                  / {summaryData.protein.target}g
+                </Text>
+              </Text>
+            </View>
+            <View>
+              <Text style={styles.macroLabel}>Lemak</Text>
+              <Text style={styles.macroValue}>
+                {summaryData.fat.current}g{" "}
+                <Text style={styles.macroSub}>/ {summaryData.fat.target}g</Text>
+              </Text>
+            </View>
+          </View>
+
+          {/* Tombol Catat Makanan */}
+          <Pressable
+            style={styles.primaryButton}
+            onPress={() =>
+              Alert.alert("Pencarian", "Membuka katalog makanan...")
+            }
+          >
+            <Ionicons name="add" size={18} color="white" />
+            <Text style={styles.primaryButtonText}>Catat Makanan</Text>
+          </Pressable>
+        </View>
+      </View>
+
+      {/* 4. Section: Menu Hari Ini */}
+      <View style={styles.sectionHeader}>
+        <View>
+          <Text style={styles.menuTitle}>Menu Hari Ini</Text>
+          <Text style={styles.greetingSubtitle}>
+            Pilihan seimbang & siap saji
+          </Text>
+        </View>
+        <Pressable style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={styles.linkText}>Lihat Semua </Text>
+          <Ionicons name="chevron-forward" size={12} color="#c27803" />
+        </Pressable>
+      </View>
+
+      {/* Loop Rendering Menu[cite: 34, 46] */}
+      <View style={styles.foodList}>
+        {todaysMenu.map((item) => renderMealCard(item))}
+      </View>
+
+      {/* 5. Filosofi FitMeal Banner */}
+      <View style={styles.philosophyBanner}>
+        <Text style={styles.philosophyTag}>FILOSOFI FITMEAL</Text>
+        <Text style={styles.philosophyQuote}>“Diet Sehat & Tetap Lezat.”</Text>
+        <Text style={styles.philosophyDesc}>
+          Pola makan yang konsisten dan seimbang tanpa rasa terbebani. Dipandu
+          rancangan gizi harian yang presisi.
+        </Text>
       </View>
     </ScrollView>
   );
