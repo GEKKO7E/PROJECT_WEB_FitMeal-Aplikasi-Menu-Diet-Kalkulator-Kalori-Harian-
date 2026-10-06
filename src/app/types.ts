@@ -1,12 +1,17 @@
-export type DietGoal = "Turun BB" | "Jaga BB" | "Tambah Otot";
-
 export interface MealItem {
   readonly id: number;
   name: string;
   category: string;
   calories: number;
   protein: number;
-  price: number;
+  timeMinutes: number;
   imageUrl: string;
-  isPopular?: boolean;
+}
+
+export interface CalorieSummary {
+  consumed: number;
+  target: number;
+  carbs: { current: number; target: number };
+  protein: { current: number; target: number };
+  fat: { current: number; target: number };
 }
