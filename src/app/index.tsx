@@ -1,5 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Alert, Image, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Alert,
+  DimensionValue,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { styles } from "./styles";
 import { CalorieSummary, MealItem } from "./types";
 
@@ -49,7 +57,9 @@ const todaysMenu: MealItem[] = [
 export default function Index() {
   const userName: string = "Danishwara";
   const remainingCalories: number = summaryData.target - summaryData.consumed;
-  const progressPercent: string = `${Math.round((summaryData.consumed / summaryData.target) * 100)}%`;
+
+  // Perbaikan: Menambahkan anotasi tipe DimensionValue
+  const progressPercent: DimensionValue = `${Math.round((summaryData.consumed / summaryData.target) * 100)}%`;
 
   // Custom Function untuk Render Item Menu[cite: 33, 46]
   const renderMealCard = (item: MealItem) => {
