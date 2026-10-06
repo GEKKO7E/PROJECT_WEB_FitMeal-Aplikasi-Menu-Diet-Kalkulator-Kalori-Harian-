@@ -26,12 +26,13 @@ const todaysMenu: MealItem[] = [
   },
   {
     id: 2,
-    name: "Gado-Gado Telur Rebus (Bumbu Terpisah)",
+    name: "Gado-Gado Telur Rebus",
     category: "SARAPAN",
     calories: 320,
     protein: 18,
     timeMinutes: 10,
-    imageUrl: "https://ibb.co.com/WW4xRQpQ",
+    imageUrl:
+      "https://media.istockphoto.com/id/2194385618/id/foto/hidangan-salad-gado-gado-berwarna-warni-dengan-sayuran-telur-rebus-dan-saus-kacang-di-latar.jpg?s=612x612&w=0&k=20&c=QUBkVQMzmNduK9lnjHv295aQuIu0QXBTPVr9y1BcZOo=",
   },
   {
     id: 3,
@@ -40,7 +41,8 @@ const todaysMenu: MealItem[] = [
     calories: 290,
     protein: 30,
     timeMinutes: 20,
-    imageUrl: "https://ibb.co.com/ZRRrvw7n",
+    imageUrl:
+      "https://www.jabarmedia.com/wp-content/uploads/2025/12/gurame-pepes.jpg",
   },
 ];
 
