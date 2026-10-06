@@ -22,7 +22,7 @@ const todaysMenu: MealItem[] = [
     protein: 32,
     timeMinutes: 15,
     imageUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAdS2D0sag972o7Gylp4NvFO7SDV3Z4u9U0y6oB95xWQQrkAoZm8xmePC7iXpGJGWjIRaHCKDDR3kUTkvdIoXzugM86oKzxRKpEg-HqZe-Ju0YDK2OBgQC_MN4wc6ktOO6DShVuYPaXPcYIiJIS1O7c4sWCrpxPgXRs1rLxzSuog5jVdHSM2RI4QtFLgd4HLh19f15RM2c-e6LdJpbU732SOblWfOE5CzSIi8A0d1mUfPWbZcUKR2MY",
+      "https://i.pinimg.com/1200x/c6/63/7e/c6637e891ea281f57462072e4e46da4c.jpg",
   },
   {
     id: 2,
@@ -31,18 +31,16 @@ const todaysMenu: MealItem[] = [
     calories: 320,
     protein: 18,
     timeMinutes: 10,
-    imageUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBJx3ZptWknntVWXIgeYEIU-yUHyLMa3F8jQ06RgwHdnJip_0hN8sPg5SIygtGKmBa3rBjmfO7YmMAUeH0yJC3wNeGI-K1REnKtsEtHY2mJKOL02N-4OVYa0Q0psHQM3X-ZVqMZANo0A1tzrCDxNIUn4Apc0mSfUQHwMGY4sFrwMPFdWLT2ClKHAERIzaBpcP0ahIQJtMmxW3JbYwKS9n03gaaHRM1k8j3ehu6p2u0bu8Op3CSP8bHe",
+    imageUrl: "https://ibb.co.com/WW4xRQpQ",
   },
   {
     id: 3,
-    name: "Ikan Gurame Kerapu Kukus Bumbu Kuning",
+    name: "Ikan Gurame Kukus Bumbu Kuning",
     category: "MAKAN MALAM",
     calories: 290,
     protein: 30,
     timeMinutes: 20,
-    imageUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCIg7m7bav5f3P4WpxIvY0KTK6WaHBFSdJa8ntbDAR1riF86cacvz1qmG2YX0fKxfdIqAL4jWGt-L0Xgmgh6k-E5BQ4itcHto5do18vAvjtLx1C3w7Jndwp32nLDV_cmShglgEC_8d9nKTiRq3Hz4Z2JDiz1l7t1NTzMA--dfMcOtAWbhwlXXB-kmNyJRySVdkYI8f8sKrB2qvKF2ISt5NIDFkzCfzJ61P40-pdpZltKI4s72RHBnXe",
+    imageUrl: "https://ibb.co.com/ZRRrvw7n",
   },
 ];
 
