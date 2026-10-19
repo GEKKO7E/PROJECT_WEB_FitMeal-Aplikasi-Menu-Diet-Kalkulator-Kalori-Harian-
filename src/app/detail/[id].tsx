@@ -4,7 +4,7 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function DetailScreen() {
   const router = useRouter();
-  
+
   // --- KETENTUAN MODUL 2: useLocalSearchParams() ---
   const params = useLocalSearchParams();
 
@@ -12,7 +12,11 @@ export default function DetailScreen() {
   const category = params.category ? String(params.category) : "INFORMASI";
   const calories = params.calories ? String(params.calories) : "0";
   const protein = params.protein ? String(params.protein) : "0";
-  const time = params.time ? String(params.time) : "10";
+  const time = params.time
+    ? String(params.time)
+    : params.timeMinutes
+      ? String(params.timeMinutes)
+      : "10";
   const image = params.image
     ? String(params.image)
     : "https://i.pinimg.com/1200x/c6/63/7e/c6637e891ea281f57462072e4e46da4c.jpg";
@@ -22,7 +26,10 @@ export default function DetailScreen() {
       {/* Header dengan tombol Back */}
       <View style={detailStyles.header}>
         {/* --- KETENTUAN MODUL 2: router.back() --- */}
-        <Pressable style={detailStyles.backButton} onPress={() => router.back()}>
+        <Pressable
+          style={detailStyles.backButton}
+          onPress={() => router.back()}
+        >
           <Ionicons name="arrow-back" size={20} color="#0e2d1f" />
         </Pressable>
         <Text style={detailStyles.headerTitle}>Detail Resep</Text>
@@ -31,7 +38,7 @@ export default function DetailScreen() {
 
       <View style={detailStyles.content}>
         <Image source={{ uri: image }} style={detailStyles.image} />
-        
+
         <View style={detailStyles.badgeContainer}>
           <Text style={detailStyles.badgeText}>{category}</Text>
         </View>
@@ -54,7 +61,9 @@ export default function DetailScreen() {
         </View>
 
         <Text style={detailStyles.desc}>
-          Menu makanan sehat pilihan yang dirancang khusus untuk mencakup kebutuhan nutrisi harian Anda secara presisi tanpa mengorbankan cita rasa.
+          Menu makanan sehat pilihan yang dirancang khusus untuk mencakup
+          kebutuhan nutrisi harian Anda secara presisi tanpa mengorbankan cita
+          rasa.
         </Text>
 
         {/* --- KETENTUAN MODUL 2: Fungsi Router Tambahan (router.replace) --- */}
@@ -62,7 +71,9 @@ export default function DetailScreen() {
           style={detailStyles.primaryButton}
           onPress={() => router.replace("/")}
         >
-          <Text style={detailStyles.primaryButtonText}>Kembali ke Beranda (Replace)</Text>
+          <Text style={detailStyles.primaryButtonText}>
+            Kembali ke Beranda (Replace)
+          </Text>
         </Pressable>
       </View>
     </View>

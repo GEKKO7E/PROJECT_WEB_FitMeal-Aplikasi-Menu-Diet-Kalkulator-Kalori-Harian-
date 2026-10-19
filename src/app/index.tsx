@@ -99,17 +99,17 @@ export default function Index() {
         // --- KETENTUAN MODUL 2: router.push() dengan Dynamic Parameter ---
         onPress={() =>
           router.push({
-            pathname: "/detail/[id]",
+            pathname: `/detail/${item.id}`,
             params: {
-              id: item.id,
+              id: String(item.id),
               name: item.name,
               category: item.category,
-              calories: item.calories,
-              protein: item.protein,
-              time: item.timeMinutes,
+              calories: String(item.calories),
+              protein: String(item.protein),
+              time: String(item.timeMinutes),
               image: item.imageUrl,
             },
-          })
+          } as any)
         }
       >
         <Image source={{ uri: item.imageUrl }} style={styles.foodImage} />
@@ -230,18 +230,18 @@ export default function Index() {
             style={styles.primaryButton}
             onPress={() =>
               router.push({
-                pathname: "/detail/[id]",
+                pathname: "/detail/catalog",
                 params: {
                   id: "catalog",
                   name: "Katalog Makanan Sehat",
                   category: "RANGKUMAN NUTRISI",
-                  calories: summaryData.consumed,
-                  protein: summaryData.protein.current,
-                  timeMinutes: 0,
+                  calories: String(summaryData.consumed),
+                  protein: String(summaryData.protein.current),
+                  time: "0",
                   image:
                     "https://i.pinimg.com/1200x/c6/63/7e/c6637e891ea281f57462072e4e46da4c.jpg",
                 },
-              })
+              } as any)
             }
           >
             <Ionicons name="add" size={18} color="white" />
@@ -262,9 +262,18 @@ export default function Index() {
           style={{ flexDirection: "row", alignItems: "center" }}
           onPress={() =>
             router.push({
-              pathname: "/detail/[id]",
-              params: { id: "all", name: "Semua Menu Pilihan" },
-            })
+              pathname: "/detail/all",
+              params: {
+                id: "all",
+                name: "Semua Menu Pilihan",
+                category: "SEMUA MENU",
+                calories: "0",
+                protein: "0",
+                time: "0",
+                image:
+                  "https://i.pinimg.com/1200x/c6/63/7e/c6637e891ea281f57462072e4e46da4c.jpg",
+              },
+            } as any)
           }
         >
           <Text style={styles.linkText}>Lihat Semua </Text>
