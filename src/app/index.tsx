@@ -1,4 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   Alert,
   DimensionValue,
@@ -11,8 +13,8 @@ import {
 import { styles } from "./styles";
 import { CalorieSummary, MealItem } from "./types";
 
-// Data Ringkasan Kalori Harian
-const summaryData: CalorieSummary = {
+// Data Awal Ringkasan Kalori
+const initialSummary: CalorieSummary = {
   consumed: 1420,
   target: 2100,
   carbs: { current: 180, target: 250 },
@@ -55,16 +57,61 @@ const todaysMenu: MealItem[] = [
 ];
 
 export default function Index() {
+  const router = useRouter();
   const userName: string = "Danishwara";
+
+  // --- KETENTUAN MODUL 2: useState ---
+  const [summaryData, setSummaryData] =
+    useState<CalorieSummary>(initialSummary);
+
+  // --- KETENTUAN MODUL 2: useEffect ---
+  useEffect(() => {
+    console.log(
+      "[MODUL 2] App mounted: useEffect berhasil dijalankan saat initial render.",
+    );
+  }, []);
+
+  // Hitung sisa kalori & progress bar secara dinamis berdasarkan state
   const remainingCalories: number = summaryData.target - summaryData.consumed;
+  const progressPercent: DimensionValue = `${Math.min(
+    Math.round((summaryData.consumed / summaryData.target) * 100),
+    100,
+  )}%`;
 
-  // Perbaikan: Menambahkan anotasi tipe DimensionValue
-  const progressPercent: DimensionValue = `${Math.round((summaryData.consumed / summaryData.target) * 100)}%`;
+  // Fungsi interaktif ketika tombol tambah menu diklik (Memperbarui State & Trigger UI Re-render)
+  const handleAddMealToLog = (item: MealItem) => {
+    setSummaryData((prev) => ({
+      ...prev,
+      consumed: prev.consumed + item.calories,
+    }));
+    Alert.alert(
+      "FitMeal Log",
+      `${item.name} (+${item.calories} kkal) berhasil ditambahkan ke asupan harian!`,
+    );
+  };
 
-  // Custom Function untuk Render Item Menu[cite: 33, 46]
+  // Custom Function untuk Render Item Menu
   const renderMealCard = (item: MealItem) => {
     return (
-      <View key={item.id} style={styles.foodCard}>
+      <Pressable
+        key={item.id}
+        style={styles.foodCard}
+        // --- KETENTUAN MODUL 2: router.push() dengan Dynamic Parameter ---
+        onPress={() =>
+          router.push({
+            pathname: "/detail/[id]",
+            params: {
+              id: item.id,
+              name: item.name,
+              category: item.category,
+              calories: item.calories,
+              protein: item.protein,
+              time: item.timeMinutes,
+              image: item.imageUrl,
+            },
+          })
+        }
+      >
         <Image source={{ uri: item.imageUrl }} style={styles.foodImage} />
         <View style={styles.foodInfo}>
           <Text style={styles.categoryBadge}>{item.category}</Text>
@@ -80,21 +127,19 @@ export default function Index() {
               {item.calories} <Text style={styles.macroSub}>kkal</Text>
             </Text>
 
-            {/* Pressable Interaktif untuk Tambah Menu[cite: 11] */}
+            {/* Tombol tambah cepat (mengubah state consumed) */}
             <Pressable
               style={styles.addButton}
-              onPress={() =>
-                Alert.alert(
-                  "FitMeal",
-                  `${item.name} berhasil ditambahkan ke log harian!`,
-                )
-              }
+              onPress={(e) => {
+                e.stopPropagation(); // Mencegah Pressable parent ikut terpanggil
+                handleAddMealToLog(item);
+              }}
             >
               <Ionicons name="add" size={16} color="#0e2d1f" />
             </Pressable>
           </View>
         </View>
-      </View>
+      </Pressable>
     );
   };
 
@@ -106,7 +151,12 @@ export default function Index() {
           <Ionicons name="leaf-outline" size={20} color="#0e2d1f" />
           <Text style={styles.brandTitle}>FITMEAL</Text>
         </View>
-        <Pressable style={styles.iconButton}>
+        <Pressable
+          style={styles.iconButton}
+          onPress={() =>
+            Alert.alert("Notifikasi", "Tidak ada pemberitahuan baru.")
+          }
+        >
           <Ionicons name="notifications-outline" size={20} color="#69736c" />
         </Pressable>
       </View>
@@ -139,7 +189,7 @@ export default function Index() {
             </View>
           </View>
 
-          {/* Progress Bar dengan Inline Style[cite: 18, 46] */}
+          {/* Progress Bar Dinamis berdasarkan State */}
           <View style={styles.progressBarBg}>
             <View
               style={[styles.progressBarFill, { width: progressPercent }]}
@@ -175,15 +225,27 @@ export default function Index() {
             </View>
           </View>
 
-          {/* Tombol Catat Makanan */}
+          {/* Tombol Catat Makanan menggunakan router.push ke halaman lain */}
           <Pressable
             style={styles.primaryButton}
             onPress={() =>
-              Alert.alert("Pencarian", "Membuka katalog makanan...")
+              router.push({
+                pathname: "/detail/[id]",
+                params: {
+                  id: "catalog",
+                  name: "Katalog Makanan Sehat",
+                  category: "RANGKUMAN NUTRISI",
+                  calories: summaryData.consumed,
+                  protein: summaryData.protein.current,
+                  timeMinutes: 0,
+                  image:
+                    "https://i.pinimg.com/1200x/c6/63/7e/c6637e891ea281f57462072e4e46da4c.jpg",
+                },
+              })
             }
           >
             <Ionicons name="add" size={18} color="white" />
-            <Text style={styles.primaryButtonText}>Catat Makanan</Text>
+            <Text style={styles.primaryButtonText}>Catat Makanan Baru</Text>
           </Pressable>
         </View>
       </View>
@@ -196,13 +258,21 @@ export default function Index() {
             Pilihan seimbang & siap saji
           </Text>
         </View>
-        <Pressable style={{ flexDirection: "row", alignItems: "center" }}>
+        <Pressable
+          style={{ flexDirection: "row", alignItems: "center" }}
+          onPress={() =>
+            router.push({
+              pathname: "/detail/[id]",
+              params: { id: "all", name: "Semua Menu Pilihan" },
+            })
+          }
+        >
           <Text style={styles.linkText}>Lihat Semua </Text>
           <Ionicons name="chevron-forward" size={12} color="#c27803" />
         </Pressable>
       </View>
 
-      {/* Loop Rendering Menu[cite: 34, 46] */}
+      {/* Loop Rendering Menu */}
       <View style={styles.foodList}>
         {todaysMenu.map((item) => renderMealCard(item))}
       </View>
