@@ -225,27 +225,13 @@ export default function Index() {
             </View>
           </View>
 
-          {/* Tombol Catat Makanan menggunakan router.push ke halaman lain */}
+          {/* Tombol lihat katalog menggunakan router.push ke halaman katalog */}
           <Pressable
             style={styles.primaryButton}
-            onPress={() =>
-              router.push({
-                pathname: "/detail/catalog",
-                params: {
-                  id: "catalog",
-                  name: "Katalog Makanan Sehat",
-                  category: "RANGKUMAN NUTRISI",
-                  calories: String(summaryData.consumed),
-                  protein: String(summaryData.protein.current),
-                  time: "0",
-                  image:
-                    "https://i.pinimg.com/1200x/c6/63/7e/c6637e891ea281f57462072e4e46da4c.jpg",
-                },
-              } as any)
-            }
+            onPress={() => router.push("/catalog")}
           >
-            <Ionicons name="add" size={18} color="white" />
-            <Text style={styles.primaryButtonText}>Catat Makanan Baru</Text>
+            <Ionicons name="book-outline" size={18} color="white" />
+            <Text style={styles.primaryButtonText}>Lihat Katalog</Text>
           </Pressable>
         </View>
       </View>
