@@ -105,6 +105,7 @@ const detailStyles = StyleSheet.create({
     alignItems: "center",
   },
   headerTitle: {
+    fontFamily: "Roboto",
     fontSize: 16,
     fontWeight: "bold",
     color: "#0e2d1f",
@@ -130,12 +131,14 @@ const detailStyles = StyleSheet.create({
     borderColor: "#fae1cc",
   },
   badgeText: {
+    fontFamily: "Roboto",
     fontSize: 10,
     fontWeight: "bold",
     color: "#c27803",
     letterSpacing: 1,
   },
   title: {
+    fontFamily: "Roboto",
     fontSize: 22,
     fontWeight: "bold",
     color: "#0e2d1f",
@@ -156,16 +159,19 @@ const detailStyles = StyleSheet.create({
     alignItems: "center",
   },
   infoLabel: {
+    fontFamily: "Roboto",
     fontSize: 11,
     color: "#69736c",
     marginBottom: 4,
   },
   infoValue: {
+    fontFamily: "Roboto",
     fontSize: 14,
     fontWeight: "bold",
     color: "#0e2d1f",
   },
   desc: {
+    fontFamily: "Roboto",
     fontSize: 13,
     color: "#69736c",
     lineHeight: 20,
@@ -178,6 +184,7 @@ const detailStyles = StyleSheet.create({
     alignItems: "center",
   },
   primaryButtonText: {
+    fontFamily: "Roboto",
     color: "#ffffff",
     fontWeight: "600",
     fontSize: 14,

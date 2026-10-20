@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fcfbf8", // surface background
   },
-  
+
   // Header Style
   header: {
     paddingTop: 50,
@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
     gap: 8,
   },
   brandTitle: {
+    fontFamily: "Roboto",
     fontSize: 14,
     fontWeight: "bold",
     letterSpacing: 2,
@@ -44,6 +45,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   dateText: {
+    fontFamily: "Roboto",
     fontSize: 11,
     fontWeight: "600",
     color: "#c27803",
@@ -51,11 +53,13 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
   },
   greetingTitle: {
+    fontFamily: "Roboto",
     fontSize: 26,
     fontWeight: "bold",
     color: "#0e2d1f",
   },
   greetingSubtitle: {
+    fontFamily: "Roboto",
     fontSize: 14,
     color: "#69736c",
     marginTop: 2,
@@ -82,21 +86,25 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
   },
   sectionLabel: {
+    fontFamily: "Roboto",
     fontSize: 10,
     fontWeight: "600",
     color: "#69736c",
     letterSpacing: 1,
   },
   calorieMainText: {
+    fontFamily: "Roboto",
     fontSize: 28,
     fontWeight: "bold",
     color: "#0e2d1f",
   },
   calorieSubText: {
+    fontFamily: "Roboto",
     fontSize: 13,
     color: "#69736c",
   },
   remainingText: {
+    fontFamily: "Roboto",
     fontSize: 13,
     fontWeight: "bold",
     color: "#c27803",
@@ -124,15 +132,18 @@ export const styles = StyleSheet.create({
     borderTopColor: "#eeece5",
   },
   macroLabel: {
+    fontFamily: "Roboto",
     fontSize: 11,
     color: "#69736c",
   },
   macroValue: {
+    fontFamily: "Roboto",
     fontSize: 12,
     fontWeight: "bold",
     color: "#0e2d1f",
   },
   macroSub: {
+    fontFamily: "Roboto",
     fontSize: 10,
     fontWeight: "normal",
     color: "#69736c",
@@ -150,6 +161,7 @@ export const styles = StyleSheet.create({
     gap: 8,
   },
   primaryButtonText: {
+    fontFamily: "Roboto",
     color: "#ffffff",
     fontWeight: "600",
     fontSize: 14,
@@ -165,11 +177,13 @@ export const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   menuTitle: {
+    fontFamily: "Roboto",
     fontSize: 20,
     fontWeight: "bold",
     color: "#0e2d1f",
   },
   linkText: {
+    fontFamily: "Roboto",
     fontSize: 12,
     fontWeight: "600",
     color: "#c27803",
@@ -200,6 +214,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   categoryBadge: {
+    fontFamily: "Roboto",
     fontSize: 9,
     fontWeight: "700",
     color: "#c27803",
@@ -207,11 +222,13 @@ export const styles = StyleSheet.create({
     marginBottom: 2,
   },
   foodTitle: {
+    fontFamily: "Roboto",
     fontSize: 15,
     fontWeight: "bold",
     color: "#0e2d1f",
   },
   foodSubtitle: {
+    fontFamily: "Roboto",
     fontSize: 12,
     color: "#69736c",
     marginTop: 2,
@@ -223,6 +240,7 @@ export const styles = StyleSheet.create({
     marginTop: 6,
   },
   calorieCount: {
+    fontFamily: "Roboto",
     fontSize: 12,
     fontWeight: "bold",
     color: "#0e2d1f",
@@ -249,6 +267,7 @@ export const styles = StyleSheet.create({
     borderColor: "#eeece5",
   },
   philosophyTag: {
+    fontFamily: "Roboto",
     fontSize: 10,
     fontWeight: "bold",
     color: "#c27803",
@@ -256,12 +275,14 @@ export const styles = StyleSheet.create({
     marginBottom: 4,
   },
   philosophyQuote: {
+    fontFamily: "Roboto",
     fontSize: 17,
     fontWeight: "bold",
     fontStyle: "italic",
     color: "#0e2d1f",
   },
   philosophyDesc: {
+    fontFamily: "Roboto",
     fontSize: 12,
     color: "#69736c",
     marginTop: 8,
