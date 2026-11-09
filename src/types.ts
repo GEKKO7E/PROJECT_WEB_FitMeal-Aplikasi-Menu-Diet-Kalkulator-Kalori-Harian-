@@ -4,8 +4,11 @@ export interface MealItem {
   category: string;
   calories: number;
   protein: number;
+  carbs?: number;
+  fat?: number;
   timeMinutes: number;
   imageUrl: string;
+  isFavorite?: boolean; // Properti untuk fitur favorit
 }
 
 export interface CalorieSummary {
