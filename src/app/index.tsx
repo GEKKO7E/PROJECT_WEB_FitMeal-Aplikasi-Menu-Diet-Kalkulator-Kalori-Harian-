@@ -53,7 +53,6 @@ export default function Index() {
     loadApiData();
   }, []);
 
-  // Handler Tambah Favorit -> Langsung Otomatis Pindah ke Halaman Favorit
   const handleToggleFavorite = async (item: MealItem) => {
     const nextState = !item.isFavorite;
 
@@ -65,7 +64,6 @@ export default function Index() {
 
     await toggleFavoriteService(item, nextState);
 
-    // Otomatis mengarah ke halaman favorit jika ditambahkan
     if (nextState) {
       router.push("/favorites");
     }
@@ -82,12 +80,15 @@ export default function Index() {
   };
 
   const remainingCalories: number = summaryData.target - summaryData.consumed;
+  const isOverLimit: boolean = summaryData.consumed > summaryData.target;
+
   const progressPercent: DimensionValue = `${Math.min(
     Math.round((summaryData.consumed / summaryData.target) * 100),
     100,
   )}%`;
 
-const handleAddMealToLog = (item: MealItem) => {
+  // HANDLER TAMBAH MEAL + PERINGATAN KALORI BERLEBIH
+  const handleAddMealToLog = (item: MealItem) => {
     const newConsumed = summaryData.consumed + item.calories;
 
     setSummaryData((prev) => ({
@@ -95,18 +96,17 @@ const handleAddMealToLog = (item: MealItem) => {
       consumed: newConsumed,
     }));
 
-    // LOGIKA PERINGATAN KALORI BERLEBIH
     if (newConsumed > summaryData.target) {
       const excess = newConsumed - summaryData.target;
       Alert.alert(
         "⚠️ Peringatan Kalori Berlebih!",
-        `Asupan kalori harian kamu sudah melebihi target sebanyak ${excess} kkal! Perhatikan konsumsi makanan kamu.`,
-        [{ text: "Saya Mengerti", style: "destructive" }]
+        `Asupan kalori harian kamu telah melebihi target sebanyak ${excess} kkal! Perhatikan konsumsi makanan kamu.`,
+        [{ text: "Paham", style: "destructive" }],
       );
     } else {
       Alert.alert(
         "FitMeal Log",
-        `${item.name} (+${item.calories} kkal) berhasil ditambahkan ke asupan harian!`
+        `${item.name} (+${item.calories} kkal) berhasil ditambahkan ke asupan harian!`,
       );
     }
   };
@@ -138,7 +138,6 @@ const handleAddMealToLog = (item: MealItem) => {
           >
             <Text style={styles.categoryBadge}>{item.category}</Text>
 
-            {/* Tombol Favorit */}
             <Pressable
               onPress={(e) => {
                 e.stopPropagation();
@@ -206,6 +205,29 @@ const handleAddMealToLog = (item: MealItem) => {
       {/* Calorie Card */}
       <View style={styles.cardContainer}>
         <View style={styles.calorieCard}>
+          {/* Banner Peringatan Jika Berlebih */}
+          {isOverLimit && (
+            <View
+              style={{
+                backgroundColor: "#fce8e6",
+                padding: 10,
+                borderRadius: 8,
+                marginBottom: 12,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <Ionicons name="warning" size={18} color="#e74c3c" />
+              <Text
+                style={{ color: "#c0392b", fontSize: 12, fontWeight: "600" }}
+              >
+                Kalori melampaui batas harian (+{Math.abs(remainingCalories)}{" "}
+                kkal)!
+              </Text>
+            </View>
+          )}
+
           <View style={styles.calorieHeader}>
             <View>
               <Text style={styles.sectionLabel}>ASUPAN HARI INI</Text>
@@ -218,13 +240,25 @@ const handleAddMealToLog = (item: MealItem) => {
             </View>
             <View style={{ alignItems: "flex-end" }}>
               <Text style={styles.sectionLabel}>TERSISA</Text>
-              <Text style={styles.remainingText}>{remainingCalories} kkal</Text>
+              <Text
+                style={[
+                  styles.remainingText,
+                  isOverLimit && { color: "#e74c3c" }, // Berubah warna merah jika minus
+                ]}
+              >
+                {remainingCalories} kkal
+              </Text>
             </View>
           </View>
 
+          {/* Progress Bar (Merah jika Berlebih) */}
           <View style={styles.progressBarBg}>
             <View
-              style={[styles.progressBarFill, { width: progressPercent }]}
+              style={[
+                styles.progressBarFill,
+                { width: progressPercent },
+                isOverLimit && { backgroundColor: "#e74c3c" },
+              ]}
             />
           </View>
 
@@ -256,7 +290,6 @@ const handleAddMealToLog = (item: MealItem) => {
             </View>
           </View>
 
-          {/* DITAMBAHKAN: Navigasi ke Halaman Favorit */}
           <Pressable
             style={styles.primaryButton}
             onPress={() => router.push("/favorites")}
@@ -267,7 +300,7 @@ const handleAddMealToLog = (item: MealItem) => {
         </View>
       </View>
 
-      {/* SECTION DIGANTI: Menu Sehat Hari Ini */}
+      {/* Section Menu Sehat */}
       <View style={styles.sectionHeader}>
         <View>
           <Text style={styles.menuTitle}>Menu Sehat Hari Ini</Text>
