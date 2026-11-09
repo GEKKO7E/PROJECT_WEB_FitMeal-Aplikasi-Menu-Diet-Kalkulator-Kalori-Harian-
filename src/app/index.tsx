@@ -53,20 +53,22 @@ export default function Index() {
     loadApiData();
   }, []);
 
-  // Fitur Tambah / Hapus Favorit
+  // Handler Tambah Favorit -> Langsung Otomatis Pindah ke Halaman Favorit
   const handleToggleFavorite = async (item: MealItem) => {
     const nextState = !item.isFavorite;
 
-    // Update state di UI secara lokal
     setMenuList((prevList) =>
       prevList.map((meal) =>
         meal.id === item.id ? { ...meal, isFavorite: nextState } : meal,
       ),
     );
 
-    // Menjalankan fungsi Async Service Favorit
-    const message = await toggleFavoriteService(item.name, nextState);
-    Alert.alert("FitMeal Favorit", message);
+    await toggleFavoriteService(item, nextState);
+
+    // Otomatis mengarah ke halaman favorit jika ditambahkan
+    if (nextState) {
+      router.push("/favorites");
+    }
   };
 
   const handleTestPromiseDemo = () => {
@@ -123,7 +125,7 @@ export default function Index() {
           >
             <Text style={styles.categoryBadge}>{item.category}</Text>
 
-            {/* Tombol Favorit (Ikon Hati) */}
+            {/* Tombol Favorit */}
             <Pressable
               onPress={(e) => {
                 e.stopPropagation();
@@ -168,6 +170,7 @@ export default function Index() {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      {/* Header */}
       <View style={styles.header}>
         <View style={styles.brandContainer}>
           <Ionicons name="leaf-outline" size={20} color="#0e2d1f" />
@@ -178,6 +181,7 @@ export default function Index() {
         </Pressable>
       </View>
 
+      {/* Greeting */}
       <View style={styles.greetingSection}>
         <Text style={styles.dateText}>SENIN, 24 OKTOBER</Text>
         <Text style={styles.greetingTitle}>Halo, {userName}.</Text>
@@ -186,6 +190,7 @@ export default function Index() {
         </Text>
       </View>
 
+      {/* Calorie Card */}
       <View style={styles.cardContainer}>
         <View style={styles.calorieCard}>
           <View style={styles.calorieHeader}>
@@ -238,21 +243,23 @@ export default function Index() {
             </View>
           </View>
 
+          {/* DITAMBAHKAN: Navigasi ke Halaman Favorit */}
           <Pressable
             style={styles.primaryButton}
-            onPress={() => router.push("/catalog")}
+            onPress={() => router.push("/favorites")}
           >
-            <Ionicons name="book-outline" size={18} color="white" />
-            <Text style={styles.primaryButtonText}>Lihat Katalog</Text>
+            <Ionicons name="heart-outline" size={18} color="white" />
+            <Text style={styles.primaryButtonText}>Lihat Favorit</Text>
           </Pressable>
         </View>
       </View>
 
+      {/* SECTION DIGANTI: Menu Sehat Hari Ini */}
       <View style={styles.sectionHeader}>
         <View>
-          <Text style={styles.menuTitle}>Menu API Hari Ini</Text>
+          <Text style={styles.menuTitle}>Menu Sehat Hari Ini</Text>
           <Text style={styles.greetingSubtitle}>
-            Data Asynchronous Eksternal
+            Pilihan nutrisi harian seimbang
           </Text>
         </View>
       </View>

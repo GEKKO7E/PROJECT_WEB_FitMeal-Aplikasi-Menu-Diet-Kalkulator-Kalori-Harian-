@@ -1,6 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function DetailScreen() {
@@ -19,7 +18,10 @@ export default function DetailScreen() {
   return (
     <View style={detailStyles.container}>
       <View style={detailStyles.header}>
-        <Pressable style={detailStyles.backButton} onPress={() => router.back()}>
+        <Pressable
+          style={detailStyles.backButton}
+          onPress={() => router.back()}
+        >
           <Ionicons name="arrow-back" size={20} color="#0e2d1f" />
         </Pressable>
         <Text style={detailStyles.headerTitle}>Detail Resep</Text>
@@ -51,7 +53,9 @@ export default function DetailScreen() {
         </View>
 
         <Text style={detailStyles.desc}>
-          Menu makanan sehat pilihan yang dirancang khusus untuk mencakup kebutuhan nutrisi harian Anda secara presisi tanpa mengorbankan cita rasa.
+          Menu makanan sehat pilihan yang dirancang khusus untuk mencakup
+          kebutuhan nutrisi harian Anda secara presisi tanpa mengorbankan cita
+          rasa.
         </Text>
 
         <Pressable
@@ -88,9 +92,20 @@ const detailStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  headerTitle: { fontFamily: "Roboto", fontSize: 16, fontWeight: "bold", color: "#0e2d1f" },
+  headerTitle: {
+    fontFamily: "Roboto",
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#0e2d1f",
+  },
   content: { padding: 24 },
-  image: { width: "100%", height: 220, borderRadius: 16, marginBottom: 16, backgroundColor: "#eeece5" },
+  image: {
+    width: "100%",
+    height: 220,
+    borderRadius: 16,
+    marginBottom: 16,
+    backgroundColor: "#eeece5",
+  },
   badgeContainer: {
     alignSelf: "flex-start",
     backgroundColor: "#fdf6ec",
@@ -101,8 +116,20 @@ const detailStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#fae1cc",
   },
-  badgeText: { fontFamily: "Roboto", fontSize: 10, fontWeight: "bold", color: "#c27803", letterSpacing: 1 },
-  title: { fontFamily: "Roboto", fontSize: 22, fontWeight: "bold", color: "#0e2d1f", marginBottom: 16 },
+  badgeText: {
+    fontFamily: "Roboto",
+    fontSize: 10,
+    fontWeight: "bold",
+    color: "#c27803",
+    letterSpacing: 1,
+  },
+  title: {
+    fontFamily: "Roboto",
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#0e2d1f",
+    marginBottom: 16,
+  },
   infoRow: { flexDirection: "row", gap: 12, marginBottom: 20 },
   infoBox: {
     flex: 1,
@@ -113,9 +140,35 @@ const detailStyles = StyleSheet.create({
     borderColor: "#eeece5",
     alignItems: "center",
   },
-  infoLabel: { fontFamily: "Roboto", fontSize: 11, color: "#69736c", marginBottom: 4 },
-  infoValue: { fontFamily: "Roboto", fontSize: 14, fontWeight: "bold", color: "#0e2d1f" },
-  desc: { fontFamily: "Roboto", fontSize: 13, color: "#69736c", lineHeight: 20, marginBottom: 30 },
-  primaryButton: { backgroundColor: "#0e2d1f", borderRadius: 12, paddingVertical: 14, alignItems: "center" },
-  primaryButtonText: { fontFamily: "Roboto", color: "#ffffff", fontWeight: "600", fontSize: 14 },
+  infoLabel: {
+    fontFamily: "Roboto",
+    fontSize: 11,
+    color: "#69736c",
+    marginBottom: 4,
+  },
+  infoValue: {
+    fontFamily: "Roboto",
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#0e2d1f",
+  },
+  desc: {
+    fontFamily: "Roboto",
+    fontSize: 13,
+    color: "#69736c",
+    lineHeight: 20,
+    marginBottom: 30,
+  },
+  primaryButton: {
+    backgroundColor: "#0e2d1f",
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: "center",
+  },
+  primaryButtonText: {
+    fontFamily: "Roboto",
+    color: "#ffffff",
+    fontWeight: "600",
+    fontSize: 14,
+  },
 });

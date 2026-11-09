@@ -3,6 +3,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
+// Tahan splash screen sampai font selesai dimuat
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -26,11 +27,13 @@ export default function RootLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false, // Disembunyikan karena kita membuat header kustom sendiri
+        headerShown: false, // Disembunyikan agar header kustom di setiap screen tidak bentrok
       }}
     >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="detail/[id]" />
+      <Stack.Screen name="index" options={{ title: "Beranda" }} />
+      <Stack.Screen name="favorites" options={{ title: "Menu Favorit" }} />
+      <Stack.Screen name="catalog" options={{ title: "Katalog Makanan" }} />
+      <Stack.Screen name="detail/[id]" options={{ title: "Detail Menu" }} />
     </Stack>
   );
 }

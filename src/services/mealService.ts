@@ -1,6 +1,8 @@
 import { MealItem } from "../types";
 
-// Integrasi External API Makanan Sehat (DummyJSON Recipes)
+let favoriteListMemory: MealItem[] = [];
+
+// Fetch data makanan dari API
 export const fetchMealsFromApi = async (): Promise<MealItem[]> => {
   const response = await fetch("https://dummyjson.com/recipes?limit=6");
   if (!response.ok) {
@@ -10,6 +12,7 @@ export const fetchMealsFromApi = async (): Promise<MealItem[]> => {
 
   return data.recipes.map((item: any) => {
     const calories = item.caloriesPerServing || 300;
+    const isFav = favoriteListMemory.some((fav) => fav.id === item.id);
 
     return {
       id: item.id,
@@ -21,28 +24,38 @@ export const fetchMealsFromApi = async (): Promise<MealItem[]> => {
       fat: Math.round((calories * 0.2) / 9),
       timeMinutes: item.prepTimeMinutes + item.cookTimeMinutes,
       imageUrl: item.image,
-      isFavorite: false,
+      isFavorite: isFav,
     };
   });
 };
 
-// Custom Async Function untuk Menambah / Menghapus Favorit (Promise Demo)
+// Tambah / Hapus Favorit dengan Promise
 export const toggleFavoriteService = (
-  mealName: string,
+  meal: MealItem,
   isFav: boolean,
 ): Promise<string> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       if (isFav) {
-        resolve(`${mealName} ditambahkan ke daftar Favorit!`);
+        if (!favoriteListMemory.some((f) => f.id === meal.id)) {
+          favoriteListMemory.push({ ...meal, isFavorite: true });
+        }
+        resolve(`${meal.name} ditambahkan ke daftar Favorit!`);
       } else {
-        resolve(`${mealName} dihapus dari daftar Favorit.`);
+        favoriteListMemory = favoriteListMemory.filter((f) => f.id !== meal.id);
+        resolve(`${meal.name} dihapus dari Favorit.`);
       }
-    }, 400); // Simulasi delay async
+    }, 300);
   });
 };
 
-// Custom Async Function dengan Promise (Resolve & Reject) untuk Demo
+// Mendapatkan daftar Favorit
+export const getFavoriteMeals = (): Promise<MealItem[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(favoriteListMemory), 200);
+  });
+};
+
 export const simulateAsyncOperation = (isSuccess: boolean): Promise<string> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
