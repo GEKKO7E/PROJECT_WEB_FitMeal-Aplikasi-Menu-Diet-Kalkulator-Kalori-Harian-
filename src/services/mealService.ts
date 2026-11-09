@@ -56,6 +56,7 @@ export const getFavoriteMeals = (): Promise<MealItem[]> => {
   });
 };
 
+// Simulasi Operation Async
 export const simulateAsyncOperation = (isSuccess: boolean): Promise<string> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
