@@ -1,12 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import {
-    Image,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 
 const catalogMenu = [
@@ -29,26 +29,6 @@ const catalogMenu = [
     timeMinutes: 10,
     imageUrl:
       "https://media.istockphoto.com/id/2194385618/id/foto/hidangan-salad-gado-gado-berwarna-warni-dengan-sayuran-telur-rebus-dan-saus-kacang-di-latar.jpg?s=612x612&w=0&k=20&c=QUBkVQMzmNduK9lnjHv295aQuIu0QXBTPVr9y1BcZOo=",
-  },
-  {
-    id: 3,
-    name: "Ikan Gurame Kukus Bumbu Kuning",
-    category: "MAKAN MALAM",
-    calories: 290,
-    protein: 30,
-    timeMinutes: 20,
-    imageUrl:
-      "https://www.jabarmedia.com/wp-content/uploads/2025/12/gurame-pepes.jpg",
-  },
-  {
-    id: 4,
-    name: "Smoothie Pisang Alpukat",
-    category: "SNACK",
-    calories: 220,
-    protein: 12,
-    timeMinutes: 5,
-    imageUrl:
-      "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
@@ -116,10 +96,7 @@ export default function CatalogScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fcfbf8",
-  },
+  container: { flex: 1, backgroundColor: "#fcfbf8" },
   header: {
     paddingTop: 50,
     paddingBottom: 15,
@@ -145,10 +122,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#0e2d1f",
   },
-  content: {
-    padding: 24,
-    gap: 14,
-  },
+  content: { padding: 24, gap: 14 },
   subtitle: {
     fontFamily: "Roboto",
     fontSize: 13,
@@ -171,9 +145,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: "#f5f3ee",
   },
-  infoWrap: {
-    flex: 1,
-  },
+  infoWrap: { flex: 1 },
   badge: {
     fontFamily: "Roboto",
     fontSize: 9,
@@ -188,12 +160,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#0e2d1f",
   },
-  meta: {
-    fontFamily: "Roboto",
-    fontSize: 12,
-    color: "#69736c",
-    marginTop: 2,
-  },
+  meta: { fontFamily: "Roboto", fontSize: 12, color: "#69736c", marginTop: 2 },
   footer: {
     flexDirection: "row",
     justifyContent: "space-between",

@@ -10,8 +10,8 @@ import {
   Text,
   View,
 } from "react-native";
-import { styles } from "./styles";
-import { CalorieSummary, MealItem } from "./types";
+import { styles } from "../styles";
+import { CalorieSummary, MealItem } from "../types";
 
 // Data Awal Ringkasan Kalori
 const initialSummary: CalorieSummary = {
