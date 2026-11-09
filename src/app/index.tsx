@@ -11,7 +11,11 @@ import {
   Text,
   View,
 } from "react-native";
-import { fetchMealsFromApi, simulateAsyncOperation } from "../services/mealService";
+import {
+  fetchMealsFromApi,
+  simulateAsyncOperation,
+  toggleFavoriteService,
+} from "../services/mealService";
 import { styles } from "../styles";
 import { CalorieSummary, MealItem } from "../types";
 
@@ -27,7 +31,8 @@ export default function Index() {
   const router = useRouter();
   const userName: string = "Danishwara";
 
-  const [summaryData, setSummaryData] = useState<CalorieSummary>(initialSummary);
+  const [summaryData, setSummaryData] =
+    useState<CalorieSummary>(initialSummary);
   const [menuList, setMenuList] = useState<MealItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -48,6 +53,22 @@ export default function Index() {
     loadApiData();
   }, []);
 
+  // Fitur Tambah / Hapus Favorit
+  const handleToggleFavorite = async (item: MealItem) => {
+    const nextState = !item.isFavorite;
+
+    // Update state di UI secara lokal
+    setMenuList((prevList) =>
+      prevList.map((meal) =>
+        meal.id === item.id ? { ...meal, isFavorite: nextState } : meal,
+      ),
+    );
+
+    // Menjalankan fungsi Async Service Favorit
+    const message = await toggleFavoriteService(item.name, nextState);
+    Alert.alert("FitMeal Favorit", message);
+  };
+
   const handleTestPromiseDemo = () => {
     simulateAsyncOperation(true)
       .then((resultMessage) => {
@@ -61,7 +82,7 @@ export default function Index() {
   const remainingCalories: number = summaryData.target - summaryData.consumed;
   const progressPercent: DimensionValue = `${Math.min(
     Math.round((summaryData.consumed / summaryData.target) * 100),
-    100
+    100,
   )}%`;
 
   const handleAddMealToLog = (item: MealItem) => {
@@ -71,7 +92,7 @@ export default function Index() {
     }));
     Alert.alert(
       "FitMeal Log",
-      `${item.name} (+${item.calories} kkal) berhasil ditambahkan ke asupan harian!`
+      `${item.name} (+${item.calories} kkal) berhasil ditambahkan ke asupan harian!`,
     );
   };
 
@@ -97,7 +118,27 @@ export default function Index() {
       >
         <Image source={{ uri: item.imageUrl }} style={styles.foodImage} />
         <View style={styles.foodInfo}>
-          <Text style={styles.categoryBadge}>{item.category}</Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={styles.categoryBadge}>{item.category}</Text>
+
+            {/* Tombol Favorit (Ikon Hati) */}
+            <Pressable
+              onPress={(e) => {
+                e.stopPropagation();
+                handleToggleFavorite(item);
+              }}
+              hitSlop={8}
+            >
+              <Ionicons
+                name={item.isFavorite ? "heart" : "heart-outline"}
+                size={18}
+                color={item.isFavorite ? "#e74c3c" : "#69736c"}
+              />
+            </Pressable>
+          </View>
+
           <Text style={styles.foodTitle} numberOfLines={1}>
             {item.name}
           </Text>
@@ -164,7 +205,9 @@ export default function Index() {
           </View>
 
           <View style={styles.progressBarBg}>
-            <View style={[styles.progressBarFill, { width: progressPercent }]} />
+            <View
+              style={[styles.progressBarFill, { width: progressPercent }]}
+            />
           </View>
 
           <View style={styles.macrosGrid}>
@@ -172,14 +215,18 @@ export default function Index() {
               <Text style={styles.macroLabel}>Karbo</Text>
               <Text style={styles.macroValue}>
                 {summaryData.carbs.current}g{" "}
-                <Text style={styles.macroSub}>/ {summaryData.carbs.target}g</Text>
+                <Text style={styles.macroSub}>
+                  / {summaryData.carbs.target}g
+                </Text>
               </Text>
             </View>
             <View>
               <Text style={styles.macroLabel}>Protein</Text>
               <Text style={styles.macroValue}>
                 {summaryData.protein.current}g{" "}
-                <Text style={styles.macroSub}>/ {summaryData.protein.target}g</Text>
+                <Text style={styles.macroSub}>
+                  / {summaryData.protein.target}g
+                </Text>
               </Text>
             </View>
             <View>
@@ -204,15 +251,23 @@ export default function Index() {
       <View style={styles.sectionHeader}>
         <View>
           <Text style={styles.menuTitle}>Menu API Hari Ini</Text>
-          <Text style={styles.greetingSubtitle}>Data Asynchronous Eksternal</Text>
+          <Text style={styles.greetingSubtitle}>
+            Data Asynchronous Eksternal
+          </Text>
         </View>
       </View>
 
       <View style={styles.foodList}>
         {loading ? (
-          <ActivityIndicator size="large" color="#0e2d1f" style={{ marginVertical: 20 }} />
+          <ActivityIndicator
+            size="large"
+            color="#0e2d1f"
+            style={{ marginVertical: 20 }}
+          />
         ) : errorMessage ? (
-          <Text style={{ color: "red", textAlign: "center" }}>{errorMessage}</Text>
+          <Text style={{ color: "red", textAlign: "center" }}>
+            {errorMessage}
+          </Text>
         ) : (
           menuList.map((item) => renderMealCard(item))
         )}
