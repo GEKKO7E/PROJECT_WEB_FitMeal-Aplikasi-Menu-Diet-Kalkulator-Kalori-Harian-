@@ -87,15 +87,28 @@ export default function Index() {
     100,
   )}%`;
 
-  const handleAddMealToLog = (item: MealItem) => {
+const handleAddMealToLog = (item: MealItem) => {
+    const newConsumed = summaryData.consumed + item.calories;
+
     setSummaryData((prev) => ({
       ...prev,
-      consumed: prev.consumed + item.calories,
+      consumed: newConsumed,
     }));
-    Alert.alert(
-      "FitMeal Log",
-      `${item.name} (+${item.calories} kkal) berhasil ditambahkan ke asupan harian!`,
-    );
+
+    // LOGIKA PERINGATAN KALORI BERLEBIH
+    if (newConsumed > summaryData.target) {
+      const excess = newConsumed - summaryData.target;
+      Alert.alert(
+        "⚠️ Peringatan Kalori Berlebih!",
+        `Asupan kalori harian kamu sudah melebihi target sebanyak ${excess} kkal! Perhatikan konsumsi makanan kamu.`,
+        [{ text: "Saya Mengerti", style: "destructive" }]
+      );
+    } else {
+      Alert.alert(
+        "FitMeal Log",
+        `${item.name} (+${item.calories} kkal) berhasil ditambahkan ke asupan harian!`
+      );
+    }
   };
 
   const renderMealCard = (item: MealItem) => {
