@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   DimensionValue,
   Image,
@@ -10,10 +11,10 @@ import {
   Text,
   View,
 } from "react-native";
+import { fetchMealsFromApi, simulateAsyncOperation } from "../services/mealService";
 import { styles } from "../styles";
 import { CalorieSummary, MealItem } from "../types";
 
-// Data Awal Ringkasan Kalori
 const initialSummary: CalorieSummary = {
   consumed: 1420,
   target: 2100,
@@ -22,63 +23,47 @@ const initialSummary: CalorieSummary = {
   fat: { current: 38, target: 60 },
 };
 
-// Data Menu Makanan Hari Ini
-const todaysMenu: MealItem[] = [
-  {
-    id: 1,
-    name: "Nasi Merah Ayam Dada Bakar",
-    category: "MAKAN SIANG",
-    calories: 380,
-    protein: 32,
-    timeMinutes: 15,
-    imageUrl:
-      "https://i.pinimg.com/1200x/c6/63/7e/c6637e891ea281f57462072e4e46da4c.jpg",
-  },
-  {
-    id: 2,
-    name: "Gado-Gado Telur Rebus",
-    category: "SARAPAN",
-    calories: 320,
-    protein: 18,
-    timeMinutes: 10,
-    imageUrl:
-      "https://media.istockphoto.com/id/2194385618/id/foto/hidangan-salad-gado-gado-berwarna-warni-dengan-sayuran-telur-rebus-dan-saus-kacang-di-latar.jpg?s=612x612&w=0&k=20&c=QUBkVQMzmNduK9lnjHv295aQuIu0QXBTPVr9y1BcZOo=",
-  },
-  {
-    id: 3,
-    name: "Ikan Gurame Kukus Bumbu Kuning",
-    category: "MAKAN MALAM",
-    calories: 290,
-    protein: 30,
-    timeMinutes: 20,
-    imageUrl:
-      "https://www.jabarmedia.com/wp-content/uploads/2025/12/gurame-pepes.jpg",
-  },
-];
-
 export default function Index() {
   const router = useRouter();
   const userName: string = "Danishwara";
 
-  // --- KETENTUAN MODUL 2: useState ---
-  const [summaryData, setSummaryData] =
-    useState<CalorieSummary>(initialSummary);
+  const [summaryData, setSummaryData] = useState<CalorieSummary>(initialSummary);
+  const [menuList, setMenuList] = useState<MealItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // --- KETENTUAN MODUL 2: useEffect ---
   useEffect(() => {
-    console.log(
-      "[MODUL 2] App mounted: useEffect berhasil dijalankan saat initial render.",
-    );
+    const loadApiData = async () => {
+      try {
+        setLoading(true);
+        const meals = await fetchMealsFromApi();
+        setMenuList(meals);
+      } catch (error: any) {
+        setErrorMessage(error.message || "Gagal memuat API");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadApiData();
   }, []);
 
-  // Hitung sisa kalori & progress bar secara dinamis berdasarkan state
+  const handleTestPromiseDemo = () => {
+    simulateAsyncOperation(true)
+      .then((resultMessage) => {
+        Alert.alert("Promise Success (.then)", resultMessage);
+      })
+      .catch((errMessage) => {
+        Alert.alert("Promise Reject (.catch)", errMessage);
+      });
+  };
+
   const remainingCalories: number = summaryData.target - summaryData.consumed;
   const progressPercent: DimensionValue = `${Math.min(
     Math.round((summaryData.consumed / summaryData.target) * 100),
-    100,
+    100
   )}%`;
 
-  // Fungsi interaktif ketika tombol tambah menu diklik (Memperbarui State & Trigger UI Re-render)
   const handleAddMealToLog = (item: MealItem) => {
     setSummaryData((prev) => ({
       ...prev,
@@ -86,17 +71,15 @@ export default function Index() {
     }));
     Alert.alert(
       "FitMeal Log",
-      `${item.name} (+${item.calories} kkal) berhasil ditambahkan ke asupan harian!`,
+      `${item.name} (+${item.calories} kkal) berhasil ditambahkan ke asupan harian!`
     );
   };
 
-  // Custom Function untuk Render Item Menu
   const renderMealCard = (item: MealItem) => {
     return (
       <Pressable
         key={item.id}
         style={styles.foodCard}
-        // --- KETENTUAN MODUL 2: router.push() dengan Dynamic Parameter ---
         onPress={() =>
           router.push({
             pathname: `/detail/${item.id}`,
@@ -127,11 +110,10 @@ export default function Index() {
               {item.calories} <Text style={styles.macroSub}>kkal</Text>
             </Text>
 
-            {/* Tombol tambah cepat (mengubah state consumed) */}
             <Pressable
               style={styles.addButton}
               onPress={(e) => {
-                e.stopPropagation(); // Mencegah Pressable parent ikut terpanggil
+                e.stopPropagation();
                 handleAddMealToLog(item);
               }}
             >
@@ -145,23 +127,16 @@ export default function Index() {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* 1. Top Header */}
       <View style={styles.header}>
         <View style={styles.brandContainer}>
           <Ionicons name="leaf-outline" size={20} color="#0e2d1f" />
           <Text style={styles.brandTitle}>FITMEAL</Text>
         </View>
-        <Pressable
-          style={styles.iconButton}
-          onPress={() =>
-            Alert.alert("Notifikasi", "Tidak ada pemberitahuan baru.")
-          }
-        >
-          <Ionicons name="notifications-outline" size={20} color="#69736c" />
+        <Pressable style={styles.iconButton} onPress={handleTestPromiseDemo}>
+          <Ionicons name="flash-outline" size={20} color="#c27803" />
         </Pressable>
       </View>
 
-      {/* 2. Greeting Section */}
       <View style={styles.greetingSection}>
         <Text style={styles.dateText}>SENIN, 24 OKTOBER</Text>
         <Text style={styles.greetingTitle}>Halo, {userName}.</Text>
@@ -170,7 +145,6 @@ export default function Index() {
         </Text>
       </View>
 
-      {/* 3. Calorie Summary Card */}
       <View style={styles.cardContainer}>
         <View style={styles.calorieCard}>
           <View style={styles.calorieHeader}>
@@ -189,31 +163,23 @@ export default function Index() {
             </View>
           </View>
 
-          {/* Progress Bar Dinamis berdasarkan State */}
           <View style={styles.progressBarBg}>
-            <View
-              style={[styles.progressBarFill, { width: progressPercent }]}
-            />
+            <View style={[styles.progressBarFill, { width: progressPercent }]} />
           </View>
 
-          {/* Macronutrients Grid */}
           <View style={styles.macrosGrid}>
             <View>
               <Text style={styles.macroLabel}>Karbo</Text>
               <Text style={styles.macroValue}>
                 {summaryData.carbs.current}g{" "}
-                <Text style={styles.macroSub}>
-                  / {summaryData.carbs.target}g
-                </Text>
+                <Text style={styles.macroSub}>/ {summaryData.carbs.target}g</Text>
               </Text>
             </View>
             <View>
               <Text style={styles.macroLabel}>Protein</Text>
               <Text style={styles.macroValue}>
                 {summaryData.protein.current}g{" "}
-                <Text style={styles.macroSub}>
-                  / {summaryData.protein.target}g
-                </Text>
+                <Text style={styles.macroSub}>/ {summaryData.protein.target}g</Text>
               </Text>
             </View>
             <View>
@@ -225,7 +191,6 @@ export default function Index() {
             </View>
           </View>
 
-          {/* Tombol lihat katalog menggunakan router.push ke halaman katalog */}
           <Pressable
             style={styles.primaryButton}
             onPress={() => router.push("/catalog")}
@@ -236,49 +201,28 @@ export default function Index() {
         </View>
       </View>
 
-      {/* 4. Section: Menu Hari Ini */}
       <View style={styles.sectionHeader}>
         <View>
-          <Text style={styles.menuTitle}>Menu Hari Ini</Text>
-          <Text style={styles.greetingSubtitle}>
-            Pilihan seimbang & siap saji
-          </Text>
+          <Text style={styles.menuTitle}>Menu API Hari Ini</Text>
+          <Text style={styles.greetingSubtitle}>Data Asynchronous Eksternal</Text>
         </View>
-        <Pressable
-          style={{ flexDirection: "row", alignItems: "center" }}
-          onPress={() =>
-            router.push({
-              pathname: "/detail/all",
-              params: {
-                id: "all",
-                name: "Semua Menu Pilihan",
-                category: "SEMUA MENU",
-                calories: "0",
-                protein: "0",
-                time: "0",
-                image:
-                  "https://i.pinimg.com/1200x/c6/63/7e/c6637e891ea281f57462072e4e46da4c.jpg",
-              },
-            } as any)
-          }
-        >
-          <Text style={styles.linkText}>Lihat Semua </Text>
-          <Ionicons name="chevron-forward" size={12} color="#c27803" />
-        </Pressable>
       </View>
 
-      {/* Loop Rendering Menu */}
       <View style={styles.foodList}>
-        {todaysMenu.map((item) => renderMealCard(item))}
+        {loading ? (
+          <ActivityIndicator size="large" color="#0e2d1f" style={{ marginVertical: 20 }} />
+        ) : errorMessage ? (
+          <Text style={{ color: "red", textAlign: "center" }}>{errorMessage}</Text>
+        ) : (
+          menuList.map((item) => renderMealCard(item))
+        )}
       </View>
 
-      {/* 5. Filosofi FitMeal Banner */}
       <View style={styles.philosophyBanner}>
         <Text style={styles.philosophyTag}>FILOSOFI FITMEAL</Text>
         <Text style={styles.philosophyQuote}>“Diet Sehat & Tetap Lezat.”</Text>
         <Text style={styles.philosophyDesc}>
-          Pola makan yang konsisten dan seimbang tanpa rasa terbebani. Dipandu
-          rancangan gizi harian yang presisi.
+          Pola makan yang konsisten dan seimbang tanpa rasa terbebani.
         </Text>
       </View>
     </ScrollView>
