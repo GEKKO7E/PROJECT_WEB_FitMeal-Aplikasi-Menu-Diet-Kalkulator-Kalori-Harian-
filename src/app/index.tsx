@@ -6,6 +6,7 @@ import {
   Alert,
   DimensionValue,
   Image,
+  Platform,
   Pressable,
   ScrollView,
   Text,
@@ -18,6 +19,7 @@ import {
 } from "../services/mealService";
 import { styles } from "../styles";
 import { CalorieSummary, MealItem } from "../types";
+import { useAuth } from "../context/AuthContext";
 
 const initialSummary: CalorieSummary = {
   consumed: 1420,
@@ -29,7 +31,39 @@ const initialSummary: CalorieSummary = {
 
 export default function Index() {
   const router = useRouter();
-  const userName: string = "Danishwara";
+  const { user, signOut } = useAuth();
+  const userName: string =
+    user?.user_metadata?.full_name ||
+    user?.email?.split("@")[0] ||
+    "Danishwara";
+
+  const handleLogout = async () => {
+    const doLogout = async () => {
+      try {
+        await signOut();
+        router.replace("/(auth)/login");
+      } catch (error: any) {
+        Alert.alert("Gagal Logout", error.message || "Terjadi kesalahan");
+      }
+    };
+
+    if (Platform.OS === "web") {
+      const confirmed = window.confirm("Apakah Anda yakin ingin keluar?");
+      if (confirmed) {
+        await doLogout();
+      }
+      return;
+    }
+
+    Alert.alert("Konfirmasi Keluar", "Apakah Anda yakin ingin keluar?", [
+      { text: "Batal", style: "cancel" },
+      {
+        text: "Keluar",
+        style: "destructive",
+        onPress: doLogout,
+      },
+    ]);
+  };
 
   const [summaryData, setSummaryData] =
     useState<CalorieSummary>(initialSummary);
@@ -188,9 +222,18 @@ export default function Index() {
           <Ionicons name="leaf-outline" size={20} color="#0e2d1f" />
           <Text style={styles.brandTitle}>FITMEAL</Text>
         </View>
-        <Pressable style={styles.iconButton} onPress={handleTestPromiseDemo}>
-          <Ionicons name="flash-outline" size={20} color="#c27803" />
-        </Pressable>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+          <Pressable style={styles.iconButton} onPress={handleTestPromiseDemo}>
+            <Ionicons name="flash-outline" size={20} color="#c27803" />
+          </Pressable>
+          <Pressable
+            style={[styles.iconButton, { backgroundColor: "#fee2e2" }]}
+            onPress={handleLogout}
+            accessibilityLabel="Keluar"
+          >
+            <Ionicons name="log-out-outline" size={20} color="#dc2626" />
+          </Pressable>
+        </View>
       </View>
 
       {/* Greeting */}
